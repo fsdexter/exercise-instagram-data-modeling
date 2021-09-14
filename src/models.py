@@ -29,6 +29,65 @@ class Address(Base):
     def to_dict(self):
         return {}
 
+class User(Base):
+    __tablename__ = 'user' 
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    last_name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False, unique=True)
+    password = Column(String(250),nullable=False)
+    mobile_number = Column(Integer, nullable=False)
+    date_of_birth = Column(Integer, nullable=False)
+    address = Column(String(250))
+    followers = Column(Integer)
+    followed = Column(Integer)
+    publications = Column(Integer)
+    likes = Column(Integer)
+    dislikes = Column(Integer)
+
+class Media(Base):
+    __tablename__ = 'media'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user = relationship(User)
+
+    midia_scr = Column(String(250))
+
+class Comente(Base):
+    __tablename__ = 'comente'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user = relationship(User)
+
+    text = Column(String(250))
+    date = Column(Integer)
+
+class Post(Base):
+    __tablename__ = 'post'
+    id = Column(Integer, primary_key=True)
+
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user = relationship(User)
+
+    media_id = Column(Integer, ForeignKey('media.id'), nullable=False)
+    media = relationship(Media)
+
+    comente_id = Column(Integer, ForeignKey('comente.id'), nullable=False)
+    comente = relationship(Comente)
+
+    title = Column(String(250))
+    post_text = Column(String(250))
+    date = Column(Integer)
+    likes = Column(Integer)
+    dislikes = Column(Integer)
+
+class Flower(Base):
+    __tablename__ = 'flower'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user = relationship(User)
+
+
 ## Draw from SQLAlchemy base
 try:
     result = render_er(Base, 'diagram.png')
